@@ -81,6 +81,24 @@ function Car(model, milesPerGallon) {
 Car.prototype.fill = function(gallons) {
   return this.tank += gallons;
 }
+Car.prototype.drive = function(targetDistance) {
+
+  // The maximum distance the car can drive
+  const maxDistance = this.milesPerGallon * this.tank;
+
+  /* If the max distance is less than the target distance the distance driven is
+   equal to the max distance. Otherwise the distance driven is equal to the target distance */
+  const distanceDriven = maxDistance < targetDistance ? maxDistance : targetDistance;
+
+  const totalGallonsUsed = distanceDriven / this.milesPerGallon;
+
+  this.odometer += distanceDriven;
+  this.tank -= totalGallonsUsed;
+
+  if (this.tank <= 0) {
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+}
 
 /*
   TASK 3
