@@ -39,9 +39,24 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
+Person.prototype.eat = function(food) {
+  if (this.stomach.length < 10) {
+    return this.stomach.push(food);
+  } else {
+    return this.stomach;
+  }
+};
+Person.prototype.poop = function() {
+  return this.stomach = [];
+};
+Person.prototype.toString = function() {
+  return `${this.name}, ${this.age}`;
+};
 
 /*
   TASK 2
@@ -57,8 +72,32 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+Car.prototype.fill = function(gallons) {
+  return this.tank += gallons;
+}
+Car.prototype.drive = function(targetDistance) {
 
+  // The maximum distance the car can drive
+  const maxDistance = this.milesPerGallon * this.tank;
+
+  /* If the max distance is less than the target distance the distance driven is
+   equal to the max distance. Otherwise the distance driven is equal to the target distance */
+  const distanceDriven = maxDistance < targetDistance ? maxDistance : targetDistance;
+
+  const totalGallonsUsed = distanceDriven / this.milesPerGallon;
+
+  this.odometer += distanceDriven;
+  this.tank -= totalGallonsUsed;
+
+  if (this.tank <= 0) {
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
 }
 
 /*
@@ -68,18 +107,25 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
-
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age, favoriteToy);
+  this.favoriteToy = favoriteToy;
+  this.name = name;
+  this.age = age;
+}
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function() {
+  return `Playing with ${this.favoriteToy}`;
 }
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. GLOBAL BINDING - "this" in the global scope is the window/console Object.
+  2. IMPLICIT BINDING - When using a method "this" keyword refers to the object the method belongs
+  3. NEW BINDING - When a constructor function is invoked, "this" keyword refers to that specific instance of the object created and returned by the constructor function.
+  4. EXPLICIT BINDING - "this" keyword is explicitly defined when using the call, apply, or bind methods.
 */
 
 
